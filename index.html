@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>MTG Card Maker</title>
+    <style>
+      h1 {
+        margin: 0;
+      }
+      main {
+        display: flex;
+        padding: 20px;
+        font-size: 16px;
+        font-family: cursive;
+      }
+      main section {
+        flex: 1;
+      }
+      .form {
+        padding: 10px;
+      }
+      .form input,
+      .form textarea,
+      .form label {
+        display: block;
+        font-size: 20px;
+        font-family: cursive;
+        width: 100%;
+      }
+      h1 {
+        padding: 20px;
+        font-size: 30px;
+        font-family: cursive;
+      }
+      #card {
+        border: solid #cfcfcf 2px;
+        height: 600px;
+        width: 400px;
+        margin: 0 auto;
+        padding: 10px;
+      }
+      #card h2 {
+        width: 80%;
+        margin-left: 10%;
+      }
+      #card img {
+        width: 80%;
+        height: 200px;
+        display: block;
+        margin: 20px auto;
+        background-color: white;
+      }
+      #card-title {
+        background-color: beige;
+      }
+      #card-description {
+        width: 80%;
+        height: 200px;
+        background-color: beige;
+        margin: 0 auto;
+        font-size: 16px;
+      }
+      #card-description p {
+        padding: 10px;
+      }
+      #card-level {
+        width: 80%;
+        display: block;
+        margin-top: 20px;
+        margin-left: 10%;
+        text-align: right;
+        font-size: 20px;
+      }
+      #card-level span {
+        background-color: beige;
+        padding: 4px;
+      }
+      #card-cost {
+        width: 80%;
+        text-align: right;
+        letter-spacing: 4px;
+        height: 20px;
+        margin-top: 20px;
+        margin-left: 10%;
+        font-size: 20px;
+      }
+
+      #cost-green {
+        color: green;
+        background: beige;
+      }
+      #cost-red {
+        color: red;
+        background: beige;
+      }
+      #cost-blue {
+        color: blue;
+        background: beige;
+      }
+      #cost-black {
+        color: black;
+        background: beige;
+      }
+      #cost-white {
+        color: white;
+        background: beige;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>MTG Card Maker</h1>
+
+    <main>
+      <section>
+        <form onsubmit="submit()" onkeyup="changeValue()">
+          <div class="form">
+            <label>Title</label>
+            <input type="text" name="title" />
+          </div>
+          <div class="form">
+            <label>Type</label>
+            <select onchange="changeValue()" name="type">
+              <option value="green">green</option>
+              <option value="blue">blue</option>
+              <option value="red">red</option>
+              <option value="white">white</option>
+              <option value="black">black</option>
+            </select>
+          </div>
+          <div class="form">
+            <label>Description</label>
+            <textarea rows="5" name="description"> </textarea>
+          </div>
+          <div class="form">
+            <label>Picture</label>
+            <input onchange="changeValue()" type="file" name="picture" />
+          </div>
+          <div class="form">
+            <label>Power</label>
+            <input min="0" type="number" name="power" />
+          </div>
+          <div class="form">
+            <label>Toughness</label>
+            <input min="0" type="number" name="toughness" />
+          </div>
+          <hr />
+          <section id="mana-cost">
+            <h3>Mana Cost</h3>
+            <div class="form">
+              <label>Green</label>
+              <input min="0" type="number" name="green" />
+            </div>
+            <div class="form">
+              <label>Blue</label>
+              <input min="0" type="number" name="blue" />
+            </div>
+            <div class="form">
+              <label>Red</label>
+              <input min="0" type="number" name="red" />
+            </div>
+            <div class="form">
+              <label>White</label>
+              <input min="0" type="number" name="white" />
+            </div>
+            <div class="form">
+              <label>Black</label>
+              <input min="0" type="number" name="black" />
+            </div>
+          </section>
+        </form>
+      </section>
+      <section>
+        <div id="card">
+          <div id="card-cost">
+            <span id="cost-green"></span>
+            <span id="cost-blue"></span>
+            <span id="cost-red"></span>
+            <span id="cost-white"></span>
+            <span id="cost-black"></span>
+          </div>
+          <h2 id="card-title"></h2>
+          <img
+            src=""
+            alt="magic card image"
+            onerror="this.style.display='none'"
+          />
+          <div id="card-description"><p></p></div>
+          <div id="card-level">
+            <span></span>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script>
+      function submit(e) {
+        e.preventDefault();
+      }
+
+      function changeValue() {
+        const cardObject = Array.from(
+          document.querySelectorAll('input, textarea, select')
+        )
+          .map((inputField) => {
+            const value =
+              inputField.type == 'file'
+                ? inputField.files[0]
+                : inputField.value;
+            return { name: inputField.name, value };
+          })
+          .reduce((prev, current) => {
+            const add = {};
+            add[current.name] = current.value;
+            return { ...prev, ...add };
+          }, {});
+
+        createCard(cardObject);
+      }
+
+      function createCard(cardInfo) {
+        const title = cardInfo.title || '';
+        const type = cardInfo.type || 'green';
+        document.getElementById('card-title').innerHTML = title;
+        document.getElementById('card').style.backgroundColor = type;
+        console.log(cardInfo);
+        if (cardInfo.picture) {
+          var reader = new FileReader();
+          // it's onload event and you forgot (parameters)
+          reader.onload = function(e) {
+            document.querySelector('#card img').src = e.target.result;
+          };
+          // you have to declare the file loading
+          reader.readAsDataURL(cardInfo.picture);
+        } else {
+          document.querySelector('#card img').src =
+            'https://fakeimg.pl/350x200/?text=Insert Your Image';
+        }
+
+        document.querySelector('#card-description p').innerHTML =
+          cardInfo.description;
+        const toughness = cardInfo.toughness || 0;
+        const power = cardInfo.power || 0;
+        document.querySelector(
+          '#card-level span'
+        ).innerHTML = `${power} / ${toughness}`;
+
+        const green = cardInfo.green || 0;
+        const blue = cardInfo.blue || 0;
+        const red = cardInfo.red || 0;
+        const black = cardInfo.black || 0;
+        const white = cardInfo.white || 0;
+        populateCostMana('green', green);
+        populateCostMana('blue', blue);
+        populateCostMana('red', red);
+        populateCostMana('black', black);
+        populateCostMana('white', white);
+      }
+      function populateCostMana(type, cost) {
+        const span = document.getElementById('cost-' + type);
+        span.innerHTML = '';
+        for (let i = 0; i < cost; i += 1) {
+          span.innerHTML += '*';
+        }
+      }
+
+      changeValue();
+    </script>
+  </body>
+</html>
