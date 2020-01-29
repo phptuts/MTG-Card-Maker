@@ -9,6 +9,9 @@
       h1 {
         margin: 0;
       }
+      h3 {
+        padding-left: 10px;
+      }
       main {
         display: flex;
         padding: 20px;
@@ -33,6 +36,12 @@
         padding: 20px;
         font-size: 30px;
         font-family: cursive;
+      }
+      .form-divider {
+        display: flex;
+      }
+      .form-divider .form {
+        flex: 1;
       }
       #card {
         border: solid #cfcfcf 2px;
@@ -137,17 +146,19 @@
             <label>Picture</label>
             <input onchange="changeValue()" type="file" name="picture" />
           </div>
-          <div class="form">
-            <label>Power</label>
-            <input min="0" type="number" name="power" />
-          </div>
-          <div class="form">
-            <label>Toughness</label>
-            <input min="0" type="number" name="toughness" />
-          </div>
-          <hr />
-          <section id="mana-cost">
-            <h3>Mana Cost</h3>
+          <section class="form-divider">
+            <div class="form">
+              <label>Power</label>
+              <input min="0" type="number" name="power" />
+            </div>
+            <div class="form">
+              <label>Toughness</label>
+              <input min="0" type="number" name="toughness" />
+            </div>
+          </section>
+          <h3>Mana Cost</h3>
+
+          <section class="form-divider" id="mana-cost">
             <div class="form">
               <label>Green</label>
               <input min="0" type="number" name="green" />
